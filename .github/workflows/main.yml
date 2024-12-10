@@ -1,0 +1,46 @@
+name: GALLERY-360-ARTIST-USER
+
+on:
+  push:
+    branches:
+      - editing-order-items
+      - developer
+      - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.x'  # Compatible Node.js version for Expo SDK 49
+
+      - name: Install project dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # Android APK Build
+      - name: Build Android APK
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas build -p android --profile production --non-interactive --wait
+
+      - name: Display Build Logs
+        if: failure()
+        run: cat /home/expo/workingdir/build/logs/EASBuildWorker.log
