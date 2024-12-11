@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "transparent"
-      }
+      },
+      "package": "com.gallery360user" 
     },
     "web": {
       "bundler": "metro",
