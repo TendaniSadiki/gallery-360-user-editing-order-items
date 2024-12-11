@@ -35,13 +35,12 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Check Expo CLI Version
-        run: expo --version  # Debug step to verify Expo CLI version
-
       # Android APK Build
-      - name: Build Android APK using EAS
+      - name: Build Android APK
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas build -p android --profile production --non-interactive --wait
 
-      - name: Display Build Logs (on failure)
+      - name: Display Build Logs
         if: failure()
-        run: ls -R /home/ubuntu/agent/_work/1/s/.expo  # Check the correct log path
+        run: cat /home/expo/workingdir/build/logs/EASBuildWorker.log
