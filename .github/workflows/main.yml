@@ -3,7 +3,7 @@ name: GALLERY-360-ARTIST-USER
 on:
   push:
     branches:
-      - editing-order-items
+      - main
       - developer
       - staging
 
